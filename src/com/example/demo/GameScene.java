@@ -11,22 +11,31 @@ import javafx.stage.Stage;
 
 import java.util.Random;
 
+/**
+ * Singleton (Use dependency injection) GameScene that sets up the scene of the game.
+ * @author Unknown, refactoring made by Alexander Tan
+ *
+ */
 public class GameScene {
-    private static int HEIGHT = 700;
-    private static int n = 4;
-    private final static int distanceBetweenCells = 10;
-    private static double LENGTH = (HEIGHT - ((n + 1) * distanceBetweenCells)) / (double) n;
+    private int HEIGHT = 700;
+    private int n = 4;
+    private final int distanceBetweenCells = 10;
+    private double LENGTH = (HEIGHT - ((n + 1) * distanceBetweenCells)) / (double) n;
     private TextMaker textMaker = TextMaker.getSingleInstance();
     private Cell[][] cells = new Cell[n][n];
     private Group root;
     private long score = 0;
+    
+    public GameScene () {
+    	//nothing
+    }
 
-    public static void setN(int number) {
-        n = number;
+    public void setN(int number) {
+        this.n = number;
         LENGTH = (HEIGHT - ((n + 1) * distanceBetweenCells)) / (double) n;
     }
 
-    public static double getLENGTH() {
+    public double getLENGTH() {
         return LENGTH;
     }
 
