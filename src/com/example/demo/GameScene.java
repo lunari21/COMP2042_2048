@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 import java.util.Random;
 
-class GameScene {
+public class GameScene {
     private static int HEIGHT = 700;
     private static int n = 4;
     private final static int distanceBetweenCells = 10;
@@ -21,12 +21,12 @@ class GameScene {
     private Group root;
     private long score = 0;
 
-    static void setN(int number) {
+    public static void setN(int number) {
         n = number;
         LENGTH = (HEIGHT - ((n + 1) * distanceBetweenCells)) / (double) n;
     }
 
-    static double getLENGTH() {
+    public static double getLENGTH() {
         return LENGTH;
     }
 
