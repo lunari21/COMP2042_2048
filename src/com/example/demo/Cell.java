@@ -5,39 +5,53 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
+/**
+ * Cell class that represents individual cells in the game
+ * @author Unknown, Refactoring by Alexander Tan Ka Jin
+ *
+ */
+//Update: cell is composite of GameScene
 public class Cell {
     private Rectangle rectangle;
     private Group root;
     private Text textClass;
     private boolean modify = false;
 
-    void setModify(boolean modify) {
+    public void setModify(boolean modify) {
         this.modify = modify;
     }
 
-    boolean getModify() {
+    public boolean getModify() {
         return modify;
     }
 
-    Cell(double x, double y, double scale, Group root) {
-        rectangle = new Rectangle();
-        rectangle.setX(x);
-        rectangle.setY(y);
-        rectangle.setHeight(scale);
-        rectangle.setWidth(scale);
+    /**
+     * Constructor for cell objects
+     * @param x
+     * @param y
+     * @param scale
+     * @param root
+     */
+    public Cell(double x, double y, double scale, Group root) {
+    	Color startingColor = Color.rgb(224, 226, 226, 0.5);
+    	//Might wanna make a class holding all colors
+    	
+        this.rectangle = new Rectangle();
+        this.rectangle.setX(x);
+        this.rectangle.setY(y);
+        this.rectangle.setHeight(scale);
+        this.rectangle.setWidth(scale);
+        this.textClass = TextMaker.formatText("0", x, y);
         this.root = root;
-        rectangle.setFill(Color.rgb(224, 226, 226, 0.5));
-        this.textClass = TextMaker.getSingleInstance().madeText("0", x, y, root);
-        root.getChildren().add(rectangle);
+        this.rectangle.setFill(startingColor);
+        root.getChildren().add(this.rectangle);
     }
 
-    void setTextClass(Text textClass) {
-        this.textClass = textClass;
-    }
-
-    void changeCell(Cell cell) {
-        TextMaker.changeTwoText(textClass, cell.getTextClass());
+    public void changeCell(Cell cell) {
+    	//Change to SwapText and SwapPos
+        TextMaker.SwapText(textClass, cell.getTextClass());
+        TextMaker.SwapPos(textClass, cell.getTextClass());
+        
         root.getChildren().remove(cell.getTextClass());
         root.getChildren().remove(textClass);
 
@@ -51,7 +65,7 @@ public class Cell {
         cell.setColorByNumber(cell.getNumber());
     }
 
-    void adder(Cell cell) {
+    public void adder(Cell cell) {
         cell.getTextClass().setText((cell.getNumber() + this.getNumber()) + "");
         textClass.setText("0");
         root.getChildren().remove(textClass);
@@ -59,7 +73,7 @@ public class Cell {
         setColorByNumber(getNumber());
     }
 
-    void setColorByNumber(int number) {
+    public void setColorByNumber(int number) {
         switch (number) {
             case 0:
                 rectangle.setFill(Color.rgb(224, 226, 226, 0.5));
@@ -102,20 +116,24 @@ public class Cell {
 
     }
 
-    double getX() {
+    public double getX() {
         return rectangle.getX();
     }
 
-    double getY() {
+    public double getY() {
         return rectangle.getY();
     }
 
-    int getNumber() {
+    public int getNumber() {
         return Integer.parseInt(textClass.getText());
     }
 
     private Text getTextClass() {
         return textClass;
+    }
+    
+    public void setTextClass(Text textClass) {
+        this.textClass = textClass;
     }
 
 }
