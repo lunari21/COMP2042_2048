@@ -5,21 +5,39 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-//Update: textmaker is now seperate of gamescene and fully static
-//I accidentally changed a significant amount of textmaker's code without setting up a test case
-//Thankfully, not much should change as most of it was setting up variables and stuff
+/**
+ * A static class that hosts several tools on manipulating text
+ * @author Unknown, refactoring by Alexander Tan Ka Jin
+ * @version 2
+ */
 public class TextMaker {
-	private static double gameSceneLength;
+	private static double gameSceneLength; //This needs to be removed I think
+	//Since if some rogue function comes in and changes this, it might screw up a lot of stuff
 
+	/**
+	 * Gets the length of the game scene
+	 * @return length of the game scene
+	 */
 	public static double getGameSceneLength() {
 		return gameSceneLength;
 	}
 
+	/**
+	 * Updates the length of the game scene for this class
+	 * @param gameSceneLength - double
+	 */
 	public static void setGameSceneLength(double gameSceneLength) {
 		TextMaker.gameSceneLength = gameSceneLength;
 	}
 	
-    public static Text makeText(String input, double xCell, double yCell, Group root) {
+	/**
+	 * Makes text in accordance with the format of the game. Docs is somewhat unfinished
+	 * @param input - the text to be displayed
+	 * @param xCell - ??
+	 * @param yCell - ??
+	 * @return text object with white font
+	 */
+    public static Text formatText(String input, double xCell, double yCell) {
     	double unknownDivider = 7.0; //Not sure what it does precisely
     	double fontScale = 3;
     	double xScale = 1.2;
@@ -38,21 +56,30 @@ public class TextMaker {
         return text;
     }
 
-    static void changeTwoText(Text first, Text second) {
-        String temp;
-        temp = first.getText();
+    /**
+     * Swaps the displayed text of two Text objects
+     * @param first - Text object
+     * @param second - Text object
+     */
+    public static void SwapText(Text first, Text second) {
+        String tempText = first.getText();
         first.setText(second.getText());
-        second.setText(temp);
-
-        double tempNumber;
-        tempNumber = first.getX();
+        second.setText(tempText);
+    }
+    
+    /**
+     * Swaps the X and Y position of two text objects
+     * @param first - Text object
+     * @param second - Text object
+     */
+    public static void SwapPos(Text first, Text second) {
+    	double tempX = first.getX();
         first.setX(second.getX());
-        second.setX(tempNumber);
+        second.setX(tempX);
 
-        tempNumber = first.getY();
+        double tempY = first.getY();
         first.setY(second.getY());
-        second.setY(tempNumber);
-
+        second.setY(tempY);
     }
 
 }
