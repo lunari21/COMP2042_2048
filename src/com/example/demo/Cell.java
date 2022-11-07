@@ -27,10 +27,10 @@ public class Cell {
 
     /**
      * Constructor for cell objects
-     * @param x
-     * @param y
-     * @param scale
-     * @param root
+     * @param x - The x position when displayed
+     * @param y - The y position when displayed
+     * @param scale - The size of the cell when displayed
+     * @param root - The root group for this cell
      */
     public Cell(double x, double y, double scale, Group root) {
     	Color startingColor = Color.rgb(224, 226, 226, 0.5);
@@ -44,17 +44,20 @@ public class Cell {
         this.textClass = TextMaker.formatText("0", x, y);
         this.root = root;
         this.rectangle.setFill(startingColor);
+        
+        //Add this object to root
         root.getChildren().add(this.rectangle);
     }
 
-    public void changeCell(Cell cell) {
-    	//Change to SwapText and SwapPos
+    //Changed changeCell to MergeCell
+    public void mergeCell(Cell cell) {
         TextMaker.SwapText(textClass, cell.getTextClass());
         TextMaker.SwapPos(textClass, cell.getTextClass());
         
         root.getChildren().remove(cell.getTextClass());
+        //Wait was textClass supposed to be in root when made?
         root.getChildren().remove(textClass);
-
+        
         if (!cell.getTextClass().getText().equals("0")) {
             root.getChildren().add(cell.getTextClass());
         }
