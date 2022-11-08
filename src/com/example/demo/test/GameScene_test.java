@@ -9,8 +9,8 @@ class GameScene_test {
 	
 	@Test
 	void testLength() {
-		assertEquals(instance.getLENGTH(),(700 - ((4 + 1) * 10)) / (double) 4, 0.001);
+		assertEquals(instance.getLength(),(700 - ((4 + 1) * 10)) / (double) 4, 0.001);
 		instance.setN(6);
-		assertEquals(instance.getLENGTH(),(700 - ((6 + 1) * 10)) / (double) 6, 0.001);
+		assertEquals(instance.getLength(),(700 - ((6 + 1) * 10)) / (double) 6, 0.001);
 	}
 }

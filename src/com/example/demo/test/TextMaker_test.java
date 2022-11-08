@@ -27,8 +27,7 @@ class TextMaker_test {
         text.relocate(xCellpos, yCellpos);
         text.setFill(whiteColor);
         
-        TextMaker.setGameSceneLength(100);
-        Text testtext = TextMaker.formatText("#*#Lorem_ipSUUUM123", 0, 0);
+        Text testtext = TextMaker.formatText("#*#Lorem_ipSUUUM123", 0, 0, 100);
         
 		assertEquals(testtext.getText(), text.getText());
 		assertEquals(testtext.getFont(), text.getFont());
