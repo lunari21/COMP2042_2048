@@ -7,17 +7,17 @@ import javafx.scene.text.Text;
 /**
  * A class that hosts several tools on manipulating text for gamescene.
  * @author Unknown, refactoring by Alexander Tan Ka Jin
- * @version 2
+ * @version 3
  */
 public class TextMaker {
 	/**
 	 * Makes text in accordance with the format of the game. Docs is somewhat unfinished
 	 * @param input - the text to be displayed
-	 * @param xCell - ??
-	 * @param yCell - ??
+	 * @param cellPosX - X position of the cell in which the text contains
+	 * @param cellPosY - Y position of the cell in which the text contains
 	 * @return text object with white font
 	 */
-    public static Text formatText(String input, double xCell, double yCell, double sceneLength) {
+    public static Text formatText(String input, double cellPosX, double cellPosY, double sceneLength) {
     	double unknownDivider = 7.0; //Not sure what it does precisely
     	double fontScale = 3;
     	double xScale = 1.2;
@@ -25,13 +25,13 @@ public class TextMaker {
     	
         double fontSize = (fontScale * sceneLength) / unknownDivider;
         Color whiteColor = Color.WHITE;
-        double xCellpos = xCell + xScale * sceneLength / unknownDivider;
-        double yCellpos = yCell + yScale * sceneLength / unknownDivider;
+        double cellPosXScaled = cellPosX + xScale * sceneLength / unknownDivider;
+        double cellPosYScaled = cellPosY + yScale * sceneLength / unknownDivider;
         
         //Create text
         Text text = new Text(input);
         text.setFont(Font.font(fontSize));
-        text.relocate(xCellpos, yCellpos);
+        text.relocate(cellPosXScaled, cellPosYScaled);
         text.setFill(whiteColor);
 
         return text;
