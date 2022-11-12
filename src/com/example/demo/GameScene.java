@@ -14,14 +14,14 @@ import java.util.Random;
 /**
  * Singleton (Use dependency injection) GameScene that sets up the scene of the game.
  * @author Unknown, refactoring made by Alexander Tan
- *
+ * @version 1
  */
+//Update:Determine the responsibility of gamescene
 public class GameScene {
     private final int HEIGHT = 700;
     private int n = 4;
     private final int distanceBetweenCells = 10;
-    private double LENGTH = (HEIGHT - ((n + 1) * distanceBetweenCells)) / (double) n;
-    private TextMaker textMaker = TextMaker.getSingleInstance();
+    
     private Cell[][] cells = new Cell[n][n];
     private Group root;
     private long score = 0;
@@ -30,17 +30,31 @@ public class GameScene {
     	//nothing
     }
 
+    /**
+     * Sets the number n to number
+     * @param number - new value of n
+     */
     public void setN(int number) {
         this.n = number;
-        LENGTH = (HEIGHT - ((n + 1) * distanceBetweenCells)) / (double) n;
     }
 
-    public double getLENGTH() {
-        return LENGTH;
+    /**
+     * Gets the length of the game scene
+     * @return length 
+     */
+    public double getLength() {
+    	double ndouble = n; //weirdly, java rounds up when dividing with integer right side
+        return (HEIGHT - ((ndouble + 1) * distanceBetweenCells)) / ndouble;
     }
 
+    //Boss fight ahead, do you want to save?
+    /**
+     * Identifies empty cells, then picks one to replace with a random number
+     * @deprecated
+     * @param turn - Not used
+     */
+    @Deprecated //Just don't use this one. It is terrible
     private void randomFillNumber(int turn) {
-
         Cell[][] emptyCells = new Cell[n][n];
         int a = 0;
         int b = 0;
@@ -53,7 +67,6 @@ public class GameScene {
                     if (b < n-1) {
                         bForBound=b;
                         b++;
-
                     } else {
                         aForBound=a;
                         a++;
@@ -73,21 +86,32 @@ public class GameScene {
         if (random.nextInt() % 2 == 0)
             putTwo = false;
         int xCell, yCell;
-            xCell = random.nextInt(aForBound+1);
-            yCell = random.nextInt(bForBound+1);
+        xCell = random.nextInt(aForBound+1);
+        yCell = random.nextInt(bForBound+1);
+        
+        Cell targetCell = emptyCells[xCell][yCell];
+        double cellPosX = targetCell.getX();
+        double cellPosY = targetCell.getY();
+        
         if (putTwo) {
-            text = textMaker.madeText("2", emptyCells[xCell][yCell].getX(), emptyCells[xCell][yCell].getY(), root);
-            emptyCells[xCell][yCell].setTextClass(text);
+            text = TextMaker.formatText("2", cellPosX, cellPosY, getLength());
+            targetCell.setTextClass(text);
             root.getChildren().add(text);
-            emptyCells[xCell][yCell].setColorByNumber(2);
+            targetCell.setColorByVal(2);
         } else {
-            text = textMaker.madeText("4", emptyCells[xCell][yCell].getX(), emptyCells[xCell][yCell].getY(), root);
-            emptyCells[xCell][yCell].setTextClass(text);
+            text = TextMaker.formatText("4", cellPosX, cellPosY, getLength());
+            targetCell.setTextClass(text);
             root.getChildren().add(text);
-            emptyCells[xCell][yCell].setColorByNumber(4);
+            targetCell.setColorByVal(4);
         }
     }
 
+    /**
+     * Checks if the grid has empty cells
+     * @deprecated
+     * @return -1 if false, 1 if true
+     */
+    @Deprecated
     private int  haveEmptyCell() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -100,6 +124,15 @@ public class GameScene {
         return -1;
     }
 
+    /**
+     * Not sure what this does.
+     * @deprecated
+     * @param i - int
+     * @param j - int
+     * @param direct - char 
+     * @return integer representing the coordinate?
+     */
+    @Deprecated
     private int passDestination(int i, int j, char direct) {
         int coordinate = j;
         if (direct == 'l') {
@@ -153,6 +186,10 @@ public class GameScene {
         return -1;
     }
 
+    /**
+     * Moves all cells left
+     * @deprecated
+     */
     private void moveLeft() {
         for (int i = 0; i < n; i++) {
             for (int j = 1; j < n; j++) {
@@ -164,6 +201,10 @@ public class GameScene {
         }
     }
 
+    /**
+     * Moves all cells right
+     * @deprecated
+     */
     private void moveRight() {
         for (int i = 0; i < n; i++) {
             for (int j = n - 1; j >= 0; j--) {
@@ -175,6 +216,10 @@ public class GameScene {
         }
     }
 
+    /**
+     * Moves all cells up
+     * @deprecated
+     */
     private void moveUp() {
         for (int j = 0; j < n; j++) {
             for (int i = 1; i < n; i++) {
@@ -187,6 +232,10 @@ public class GameScene {
 
     }
 
+    /**
+     * Moves all cells down
+     * @deprecated
+     */
     private void moveDown() {
         for (int j = 0; j < n; j++) {
             for (int i = n - 1; i >= 0; i--) {
@@ -199,6 +248,15 @@ public class GameScene {
 
     }
 
+    /**
+     * Checks if the horizontal movement is valid
+     * @deprecated
+     * @param i - The index of the cell to be moved
+     * @param j - The index of the cell to be moved
+     * @param des - Destination horizontally
+     * @param sign - Direction of the movement
+     * @return boolean - Is valid destination?
+     */
     private boolean isValidDesH(int i, int j, int des, int sign) {
         if (des + sign < n && des + sign >= 0) {
             if (cells[i][des + sign].getNumber() == cells[i][j].getNumber() && !cells[i][des + sign].getModify()
@@ -209,6 +267,14 @@ public class GameScene {
         return false;
     }
 
+    /**
+     * Moves all cells horizontally
+     * @deprecated
+     * @param i - The index of the cell to be moved
+     * @param j - The index of the cell to be moved
+     * @param des - Destination horizontally
+     * @param sign - Direction of the movement
+     */
     private void moveHorizontally(int i, int j, int des, int sign) {
         if (isValidDesH(i, j, des, sign)) {
             cells[i][j].adder(cells[i][des + sign]);
@@ -218,6 +284,15 @@ public class GameScene {
         }
     }
 
+    /**
+     * Checks if vertical movement is valid
+     * @deprecated
+     * @param i - The index of the cell to be moved
+     * @param j - The index of the cell to be moved
+     * @param des - Destination vertically
+     * @param sign - Direction of the movement
+     * @return boolean - Is valid destination?
+     */
     private boolean isValidDesV(int i, int j, int des, int sign) {
         if (des + sign < n && des + sign >= 0)
             if (cells[des + sign][j].getNumber() == cells[i][j].getNumber() && !cells[des + sign][j].getModify()
@@ -227,6 +302,14 @@ public class GameScene {
         return false;
     }
 
+    /**
+     * Moves all cells Vertically
+     * @deprecated
+     * @param i - The index of the cell to be moved
+     * @param j - The index of the cell to be moved
+     * @param des - Destination vertically
+     * @param sign - Direction of the movement
+     */
     private void moveVertically(int i, int j, int des, int sign) {
         if (isValidDesV(i, j, des, sign)) {
             cells[i][j].adder(cells[des + sign][j]);
@@ -236,6 +319,13 @@ public class GameScene {
         }
     }
 
+    /**
+     * Checks if right and bottom neighbours have the same value
+     * @deprecated
+     * @param i - Position of the cell to be checked
+     * @param j - Position of the cell to be checked
+     * @return Returns whether a merge can be done
+     */
     private boolean haveSameNumberNearly(int i, int j) {
         if (i < n - 1 && j < n - 1) {
             if (cells[i + 1][j].getNumber() == cells[i][j].getNumber())
@@ -246,6 +336,11 @@ public class GameScene {
         return false;
     }
 
+    /**
+     * Checks if no cell can move
+     * @deprecated
+     * @return Returns if the cell cannot move anymore
+     */
     private boolean canNotMove() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -257,6 +352,9 @@ public class GameScene {
         return true;
     }
 
+    /**
+     * Calculate the score for the game
+     */
     private void sumCellNumbersToScore() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -265,12 +363,21 @@ public class GameScene {
         }
     }
 
-    void game(Scene gameScene, Group root, Stage primaryStage, Scene endGameScene, Group endGameRoot) {
+    /**
+     * Starts game
+     * @param gameScene - gamescene object
+     * @param root - the root group which is needed for displaying everything
+     * @param primaryStage - the stage of the game
+     * @param endGameScene - the scene after the game has completed
+     * @param endGameRoot - the root for the endgame scene.
+     */
+    public void game(Scene gameScene, Group root, Stage primaryStage, Scene endGameScene, Group endGameRoot) {
         this.root = root;
+        //Replace with CellGrid.GenerateDefault
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                cells[i][j] = new Cell((j) * LENGTH + (j + 1) * distanceBetweenCells,
-                        (i) * LENGTH + (i + 1) * distanceBetweenCells, LENGTH, root);
+                cells[i][j] = new Cell((j) * getLength() + (j + 1) * distanceBetweenCells,
+                        (i) * getLength() + (i + 1) * distanceBetweenCells, getLength(), root, getLength());
             }
 
         }

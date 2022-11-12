@@ -15,9 +15,11 @@ public class TextMaker {
 	 * @param input - the text to be displayed
 	 * @param cellPosX - X position of the cell in which the text contains
 	 * @param cellPosY - Y position of the cell in which the text contains
+	 * @param sceneLength - Length of the scene
 	 * @return text object with white font
 	 */
     public static Text formatText(String input, double cellPosX, double cellPosY, double sceneLength) {
+    	//Honestly this method is really weird.
     	double unknownDivider = 7.0; //Not sure what it does precisely
     	double fontScale = 3;
     	double xScale = 1.2;
@@ -31,7 +33,9 @@ public class TextMaker {
         //Create text
         Text text = new Text(input);
         text.setFont(Font.font(fontSize));
+        //Set Position
         text.relocate(cellPosXScaled, cellPosYScaled);
+        //Set Color
         text.setFill(whiteColor);
 
         return text;
@@ -62,5 +66,4 @@ public class TextMaker {
         first.setY(second.getY());
         second.setY(tempY);
     }
-
 }

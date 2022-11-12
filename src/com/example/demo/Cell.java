@@ -12,12 +12,15 @@ import javafx.scene.text.Text;
  */
 //Update: cell is composite of GameScene
 public class Cell {
+	//Rectangle that represents the graphical component of the cell
     private Rectangle rectangle;
+    //Root group. You must add the cell to this group else it will not render
     private Group root;
     //the text displayed on the cell
     private Text textClass;
-    //value of the cell, new functionality to make it less of a headache
-    private int number;
+    //value of the cell
+    private int val;
+    //I'm not sure what this does
     private boolean modify = false;
 
     /**
@@ -26,6 +29,7 @@ public class Cell {
      * @param y - The y position of the rectangle when displayed
      * @param scale - The size of the rectangle when displayed
      * @param root - The root group for this cell's rectangle
+     * @param SceneLength - The length of the game scene. Used for making sure the text is properly aligned.
      */
     public Cell(double x, double y, double scale, Group root, double SceneLength) {
     	Color startingColor = Color.rgb(224, 226, 226, 0.5);
@@ -38,8 +42,8 @@ public class Cell {
         this.rectangle.setHeight(scale);
         this.rectangle.setWidth(scale);
         //Initially it's value is 0
-        this.number = 0;
-        this.textClass = TextMaker.formatText(String.valueOf(number), x, y, SceneLength);
+        this.val = 0;
+        this.textClass = TextMaker.formatText(String.valueOf(val), x, y, SceneLength);
         this.root = root;
         this.rectangle.setFill(startingColor);
         
@@ -47,59 +51,115 @@ public class Cell {
         root.getChildren().add(this.rectangle);
     }
     
+    /**
+     * Gets the X component of the cell's position
+     * @return double
+     */
     public double getX() {
         return rectangle.getX();
     }
 
+    /**
+     * Gets the Y component of the cell's position
+     * @return double
+     */
     public double getY() {
         return rectangle.getY();
     }
-
-    @Deprecated //Use UpdateText instead
-    public void setTextClass(Text txt) {
-    	this.textClass = txt;
-    }
-
-    //Changed to public. Don't really understand why it was private
+    
+    /**
+     * Gets this object's text object
+     * @return Text
+     */
     public Text getTextClass() {
         return textClass;
     }
+
+    /**
+     * Sets text object
+     * @deprecated
+     * @param txt - Text
+     */
+    @Deprecated 
+    public void setTextClass(Text txt) {
+    	this.textClass = txt;
+    }
     
+    /**
+     * parsed the number based on it's textclass
+     * @deprecated
+     * @return int
+     */
+    @Deprecated
     public int getNumber() {
-        return number;
+        return Integer.parseInt(textClass.getText());
     }
     
-    public void setNumber(int val) {
-    	this.number = val;
+    /**
+     * Gets the value of this cell
+     * @return int
+     */
+    public int getVal() {
+        return val;
     }
     
+    /**
+     * Sets the value of this cell
+     * @param val - int
+     */
+    public void setVal(int val) {
+    	this.val = val;
+    }
+    
+    /**
+     * Sets the modify flag
+     * @param modify - boolean
+     */
     public void setModify(boolean modify) {
         this.modify = modify;
     }
 
+    /**
+     * Gets the status of the modify flag
+     * @return boolean
+     */
     public boolean getModify() {
         return modify;
     }
     
-    public void swapValue(Cell cell) {
-    	int temp = number;
-    	//If number is swapped, so is the text of textclass
-    	this.number = cell.getNumber();
-    	cell.setNumber(temp);
+    /**
+     * Swaps the value of this cell with another cell
+     * @param cell - Cell
+     */
+    public void swapVal(Cell cell) {
+    	int temp = val;
+    	//If val is swapped, so is the text of textclass
+    	this.val = cell.getVal();
+    	cell.setVal(temp);
     }
 
-    public void SwapWith (Cell cell) {
+    /**
+     * Swaps the text, text position and value of this cell and another cell
+     * @param cell - Cell
+     */
+    public void SwapCell (Cell cell) {
     	//Swap textclass positions
         TextMaker.SwapPos(textClass, cell.getTextClass());
         //Swap value
-        swapValue(cell);
+        swapVal(cell);
         //swap Text
         TextMaker.SwapText(textClass, cell.getTextClass());
     }
     
-    @Deprecated //Use SwapWith then update cell grid to remove zeros instead
+    /**
+     * Does the same thing as swapCell, then removes any zeroes and updates colors
+     * Use SwapCell, then remove zeroes on grid and update the colors of every cell instead.
+     * @deprecated
+     * @param cell - Cell
+     */
+    @Deprecated
     public void changeCell(Cell cell) {
-    	SwapWith(cell);
+    	SwapCell(cell);
         //This might go deprecated and be changed to a functionality of gamescene instead
         //Remove first. Javafx is unkind to duplicate children.
         root.getChildren().remove(cell.getTextClass());
@@ -112,30 +172,42 @@ public class Cell {
         if (getNumber() != 0)
         	root.getChildren().add(textClass);
             
-        cell.UpdateColor();
-        UpdateColor();
+        setColorByVal(getNumber());
+        cell.setColorByVal(cell.getNumber());
     }
 
-    @Deprecated //Use mergeWith instead
+    /**
+     * Deprecated, Old version of mergeWith that manipulates the text instead of the value.
+     * @param cell - Cell
+     */
+    @Deprecated
     public void adder(Cell cell) {
         cell.getTextClass().setText((cell.getNumber() + this.getNumber()) + "");
         textClass.setText("0");
         root.getChildren().remove(textClass);
-        cell.setColorByNumber(cell.getNumber());
-        setColorByNumber(getNumber());
+        cell.setColorByVal(cell.getNumber());
+        setColorByVal(getNumber());
     }
     
-    //improved version
+    /**
+     * Merges with a cell, setting this cell's value to zero and adding it to the other cell's value
+     * @param cell - Cell
+     */
     public void mergeWith(Cell cell) {
-        cell.setNumber(number+cell.getNumber());
-        setNumber(0);
+        cell.setVal(val+cell.getVal());
+        setVal(0);
         root.getChildren().remove(textClass);
         cell.UpdateColor();
         UpdateColor();
     }
-    //Unsure how to best clean this up atm
-    public void setColorByNumber(int number) {
-        switch (number) {
+    
+    /**
+     * Sets a color by it's value.
+     * About to be deprecated but no other alternative has been proposed yet.
+     * @param val - int
+     */
+    public void setColorByVal(int val) {
+        switch (val) {
             case 0:
                 rectangle.setFill(Color.rgb(224, 226, 226, 0.5));
                 break;
@@ -174,11 +246,17 @@ public class Cell {
         }
     }
     
+    /**
+     * Updates this cell's color based on it's value.
+     */
     public void UpdateColor() {
-    	setColorByNumber(number);
+    	setColorByVal(val);
     }
     
+    /**
+     * Update this cell's text based on it's value.
+     */
     public void UpdateText() {
-    	this.textClass.setText(String.valueOf(number));
+    	this.textClass.setText(String.valueOf(val));
     }
 }
