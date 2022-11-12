@@ -57,7 +57,7 @@ class Cell_test {
 	@Test
 	void test_ChangeCell_ChangeRoot_2() {
 		//Test whether group changed
-		this.test1.setNumber(20);
+		this.test1.setVal(20);
 		this.test1.changeCell(test2);
 		assertFalse(testRoot.getChildren().contains(test1.getTextClass()));
 		assertTrue(testRoot.getChildren().contains(test2.getTextClass()));
@@ -65,8 +65,8 @@ class Cell_test {
 	
 	@Test
 	void test_Merge() {
-		this.test1.setNumber(2);
-		this.test2.setNumber(4);
+		this.test1.setVal(2);
+		this.test2.setVal(4);
 		test1.adder(test2);
 		
 		assertEquals(test1.getTextClass().getText(), "0");

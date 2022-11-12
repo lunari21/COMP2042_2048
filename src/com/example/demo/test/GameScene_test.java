@@ -4,6 +4,8 @@ import com.example.demo.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+// Also covers cell grid. This is due to the overwhelming amount of methods that cell grid
+// Inherits from gamescene
 class GameScene_test {
 	final GameScene instance = new GameScene();
 	
