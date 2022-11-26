@@ -128,12 +128,28 @@ public class Cell {
     }
     
     /**
+     * Returns whether the value of this cell equals to v
+     * @param v - integer
+     * @return boolean
+     */
+    public boolean valueEquals (int v) {
+    	return val == v;
+    }
+    
+    /**
+     * Returns whether the value of this cell equals to the value of Cell c
+     * @param c - Cell
+     * @return boolean
+     */
+    public boolean valueEquals (Cell c) {
+    	return val == c.getVal();
+    }
+    /**
      * Swaps the value of this cell with another cell
      * @param cell - Cell
      */
     public void swapVal(Cell cell) {
     	int temp = val;
-    	//If val is swapped, so is the text of textclass
     	this.val = cell.getVal();
     	cell.setVal(temp);
     }
@@ -190,15 +206,12 @@ public class Cell {
     }
     
     /**
-     * Merges with a cell, setting this cell's value to zero and adding it to the other cell's value
+     * Merges with a cell, setting this cell's value to zero and adding it to the other cell's value.
      * @param cell - Cell
      */
     public void mergeWith(Cell cell) {
         cell.setVal(val+cell.getVal());
         setVal(0);
-        root.getChildren().remove(textClass);
-        cell.UpdateColor();
-        UpdateColor();
     }
     
     /**

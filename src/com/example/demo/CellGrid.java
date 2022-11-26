@@ -1,22 +1,20 @@
 package com.example.demo;
 
-import java.util.Random;
+import java.util.Arrays;
 
 /**
  * Represents an abstract version of the game.
  * @author Alexander Tan Ka Jin
  * @version 3
  */
-//Split from various methods in GameScene
-//Thus it is pretty much aggregated with that class.
 public class CellGrid {
-	private int[][] grid; //Grid should actually be an integer.
-	//private Cell[][] grid;
-	
-	//These constants represent each cell at the border of the board.
-	//These variables are mostly for the sake of clarity.
+	private int[][] grid;
 	
 	//0,0 is top left and n,n is bottom right.
+	/* The alternative (getHeight, getWidth) is more confusing I think. 
+	 * Especially in getValidPos methods when you could be iterating from -1 to getHeight-1 or 
+	 * getHeight-2 to -1. In that situation, seeing the grid in terms of cells makes more sense.
+	 */
 	private int LEFTCELLS = 0; 
 	private int RIGHTCELLS = 0; //Not initialized as length is not set.
 	private int UPCELLS = 0; 
@@ -29,10 +27,10 @@ public class CellGrid {
 	 * @param cellDistance - Distance between each cells
 	 * @param root - The game root.
 	 */
-	public CellGrid(int gridSize) {
-		this.grid = new int[gridSize][gridSize];
-		this.RIGHTCELLS = gridSize-1;
-		this.DOWNCELLS = gridSize-1;
+	public CellGrid(int gridScaleX,int gridScaleY) {
+		this.grid = new int[gridScaleY][gridScaleX];
+		this.RIGHTCELLS = gridScaleX-1;
+		this.DOWNCELLS = gridScaleY-1;
 	}
 	
 	/**
@@ -79,11 +77,19 @@ public class CellGrid {
 	}
 	
 	/**
-	 * Gets the length of the square grid
+	 * Gets the height of the grid
 	 * @return square grid length
 	 */
-	public int getLength() {
-		return grid.length;
+	public int getHeight() {
+		return DOWNCELLS+1;
+	}
+	
+	/**
+	 * Gets the width of the grid
+	 * @return square grid length
+	 */
+	public int getWidth() {
+		return RIGHTCELLS+1;
 	}
 	
 	/**
@@ -92,8 +98,8 @@ public class CellGrid {
 	 * @return boolean
 	 */
 	public boolean contains(int val) {
-		for (int y = 0; y < getLength(); y++) {
-			for (int x = 0; x < getLength(); x++) {
+		for (int y = 0; y <= DOWNCELLS; y++) {
+			for (int x = 0; x <= RIGHTCELLS; x++) {
 				if (getCell(x,y) == val)
 					return true;
 			}
@@ -108,26 +114,46 @@ public class CellGrid {
 	public boolean canMove() {
 		for (int y = 0; y <= DOWNCELLS; y++) {
 			for (int x = 0; x <= RIGHTCELLS; x++) {
-				int pointedCell = getCell(x,y);
 				//get their destinations if they were to move right or down.
 				int cellValidRight = getValidPosRight(x,y);
 				int cellValidDown = getValidPosDown(x,y);
 				
-				//If 1. cell is 0, 2. cell can move right, 3. cell can move down
-				//then the grid can still move
-				if (pointedCell == 0 || cellValidRight != x || cellValidDown != y)
+				/*If 1. cell can move right, 2. cell can move down
+				 *then the grid can still move, since if they can move right/down, 
+				 *they can move left/up
+				 */
+				if (cellValidRight != x || cellValidDown != y)
 					return true;
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * Checks if two cellgrids are the same
+	 * @param prevState - previous state
+	 * @return true if the board state was changed, false if not
+	 */
+	public boolean gridEquals (CellGrid b) {
+		return Arrays.deepEquals(grid, b.getGrid());
+	}
+	
+	public CellGrid clone (){
+		CellGrid out = new CellGrid(getWidth(),getHeight());
+		for (int y = 0; y < getHeight(); y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				out.setCell(x, y, getCell(x, y));
+			}
+		}
+		return out;
+	}
+	
 	/*
 	 * Returns the valid move position left for a given cell in position x and y.
 	 * The next few functions do the same for right, up and down respectively.
 	 * 
-	 * Due to the nature of the method, it is better to just have seperate methods for
-	 * each direction.
+	 * Due to the nature of the method (scanning in a specific direction),
+	 * it is better to just have seperate methods for each direction.
 	 */
 	
 	/**
@@ -141,11 +167,7 @@ public class CellGrid {
 		for (int pointer = posX-1; pointer >= LEFTCELLS; pointer--) {
 			int pointedCell = getCell(pointer,posY);
 			
-			if (pointedCell != 0) {
-				int targetCell = getCell(posX,posY);
-				if (pointedCell == targetCell) //if can merge
-					return pointer;
-							
+			if (pointedCell != 0) {		
 				return pointer+1;//else return right of pointed cell
 			}
 		}
@@ -160,14 +182,11 @@ public class CellGrid {
 	 * @return X position that is valid
 	 */
 	private int getValidPosRight(int posX, int posY) {
+		//right neighbor to right
 		for (int pointer = posX+1; pointer <= RIGHTCELLS; pointer++) {
 			int pointedCell = getCell(pointer,posY);
 			
 			if (pointedCell != 0) {
-				int targetCell = getCell(posX,posY);
-				if (pointedCell == targetCell) //if can merge
-					return pointer;
-							
 				return pointer-1;
 			}
 		}
@@ -180,15 +199,12 @@ public class CellGrid {
 	 * @param posY - Cell Y position
 	 * @return Y position that is valid
 	 */
-	private int getValidPosUp(int posX, int posY) {		
+	private int getValidPosUp(int posX, int posY) {	
+		//neighbor above to top
 		for (int pointer = posY-1; pointer >= UPCELLS; pointer--) {
 			int pointedCell = getCell(posX,pointer);
 			
 			if (pointedCell != 0) {
-				int targetCell = getCell(posX,posY);
-				if (pointedCell == targetCell) //if can merge
-					return pointer;
-							
 				return pointer+1;
 			}
 		}
@@ -202,14 +218,11 @@ public class CellGrid {
 	 * @return Y position that is valid
 	 */
 	private int getValidPosDown(int posX, int posY) {
+		//neighbor below to bottom
 		for (int pointer = posY+1; pointer <= DOWNCELLS; pointer++) {
 			int pointedCell = getCell(posX,pointer);
 			
 			if (pointedCell != 0) {
-				int targetCell = getCell(posX,posY);
-				if (pointedCell == targetCell) //if can merge
-					return pointer;
-							
 				return pointer-1;
 			}
 		}
@@ -218,6 +231,7 @@ public class CellGrid {
 	
 	/**
 	 * Moves all cells left 
+	 * @return this object
 	 */
 	public CellGrid MoveLeft() {
 		//from top to bottom
@@ -229,20 +243,16 @@ public class CellGrid {
 					int temp = getCell(x,y);
 					grid[y][x] = 0; //reset cell first. 
 					//This is because destinationX can be equal to x.
-					
-					
-					if (getCell(destinationX,y) == temp)
-						grid[y][destinationX] += temp;// merge
-					else
-						grid[y][destinationX] = temp;
+					grid[y][destinationX] = temp;
 				}
 			}
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Moves all cells right
+	 * @return this object
 	 */
 	public CellGrid MoveRight() {
 		//from top to bottom
@@ -253,12 +263,7 @@ public class CellGrid {
 					int destinationX = getValidPosRight(x,y);//possible range [x,LEFTCELLS]
 					int temp = getCell(x,y);
 					grid[y][x] = 0; //reset cell
-					
-					
-					if (getCell(destinationX,y) == temp)
-						grid[y][destinationX] += temp;// merge
-					else
-						grid[y][destinationX] = temp;
+					grid[y][destinationX] = temp;
 				}
 			}
 		}
@@ -267,6 +272,7 @@ public class CellGrid {
 	
 	/**
 	 * Moves all cells up
+	 * @return this object
 	 */
 	public CellGrid MoveUp() {
 		//from top to bottom
@@ -277,12 +283,7 @@ public class CellGrid {
 					int destinationY = getValidPosUp(x,y);//possible range [x,LEFTCELLS]
 					int temp = getCell(x,y);
 					grid[y][x] = 0; //reset cell
-					
-					
-					if (getCell(x,destinationY) == temp)
-						grid[destinationY][x] += temp;// merge
-					else
-						grid[destinationY][x] = temp;
+					grid[destinationY][x] = temp;
 				}
 			}
 		}
@@ -291,6 +292,7 @@ public class CellGrid {
 	
 	/**
 	 * Moves all cells down
+	 * @return this object
 	 */
 	public CellGrid MoveDown() {
 		//from top to bottom
@@ -301,33 +303,14 @@ public class CellGrid {
 					int destinationY = getValidPosDown(x,y);//possible range [x,LEFTCELLS]
 					int temp = getCell(x,y);
 					grid[y][x] = 0; //reset cell
-					
-					
-					if (getCell(x,destinationY) == temp)
-						grid[destinationY][x] += temp;// merge
-					else
-						grid[destinationY][x] = temp;
+					grid[destinationY][x] = temp;
 				}
 			}
 		}
 		return this;
 	}
 	
-	/**
-	 * Move to Somewhere else?
-	 * Sets a value onto a random cell
-	 * @param val - int
-	 * @param rand - Random
-	 * @return this object
-	 */
-	public CellGrid SetAtRandomCell(int val, Random rand) {
-		int x,y = 0;
-		do { //Try to find a position
-			x = rand.nextInt(getLength());
-			y = rand.nextInt(getLength());
-		}while (getCell(x,y) != 0);
-		
-		setCell(x,y,val);
-		return this;
+	public CellGrid MergeLeft() {
+		//wip
 	}
 }

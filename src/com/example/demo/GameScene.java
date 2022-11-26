@@ -13,6 +13,7 @@ import java.util.Random;
 
 /**
  * Singleton (Use dependency injection) GameScene that sets up the scene of the game.
+ * With the introduction of CellGrid, this class is now mainly responsible for displaying the game.
  * @author Unknown, refactoring made by Alexander Tan
  * @version 1
  */
@@ -32,6 +33,7 @@ public class GameScene {
 
     /**
      * Sets the number n to number
+     * @deprecated n shouldn't be set
      * @param number - new value of n
      */
     public void setN(int number) {
@@ -48,6 +50,8 @@ public class GameScene {
     }
 
     //Boss fight ahead, do you want to save?
+    //All methods beyond this are deprecated (outside of game). 
+    //About to be replaced by methods in CellGrid
     /**
      * Identifies empty cells, then picks one to replace with a random number
      * @deprecated
@@ -107,9 +111,9 @@ public class GameScene {
     }
 
     /**
-     * Checks if the grid has empty cells
-     * @deprecated
-     * @return -1 if false, 1 if true
+     * Checks if the grid has empty cells or has a 2048 win condition 
+     * @deprecated Use CellGrid.contains
+     * @return -1 if no zeroes or 2048, 1 if there is a 0, 0 if there is a 2048 on the top left
      */
     @Deprecated
     private int  haveEmptyCell() {
@@ -117,7 +121,7 @@ public class GameScene {
             for (int j = 0; j < n; j++) {
                 if (cells[i][j].getNumber() == 0)
                     return 1;
-                if(cells[i][j].getNumber() == 2048)
+                if(cells[i][j].getNumber() == 2048) //isn't this unreachable?
                     return 0;
             }
         }
@@ -125,8 +129,8 @@ public class GameScene {
     }
 
     /**
-     * Not sure what this does.
-     * @deprecated
+     * Returns valid position in a single direction
+     * @deprecated Use CellGrid.getValidPos
      * @param i - int
      * @param j - int
      * @param direct - char 
@@ -134,17 +138,17 @@ public class GameScene {
      */
     @Deprecated
     private int passDestination(int i, int j, char direct) {
-        int coordinate = j;
-        if (direct == 'l') {
-            for (int k = j - 1; k >= 0; k--) {
-                if (cells[i][k].getNumber() != 0) {
+        int coordinate = j; //Set coordinate as j if left/right, wait is it indexed as cell[y][x]???
+        if (direct == 'l') { //if left direction
+            for (int k = j - 1; k >= 0; k--) { //k is from j-1 to 0
+                if (cells[i][k].getNumber() != 0) { // check any non zeroes exist (cell in the left)
                     coordinate = k + 1;
-                    break;
-                } else if (k == 0) {
-                    coordinate = 0;
+                    break; //return right of cell
+                } else if (k == 0) { //if run into edge
+                    coordinate = 0; // return left edge
                 }
             }
-            return coordinate;
+            return coordinate; 
         }
         coordinate = j;
         if (direct == 'r') {
@@ -188,7 +192,7 @@ public class GameScene {
 
     /**
      * Moves all cells left
-     * @deprecated
+     * @deprecated Use CellGrid
      */
     private void moveLeft() {
         for (int i = 0; i < n; i++) {
@@ -203,7 +207,7 @@ public class GameScene {
 
     /**
      * Moves all cells right
-     * @deprecated
+     * @deprecated Use CellGrid
      */
     private void moveRight() {
         for (int i = 0; i < n; i++) {
@@ -218,7 +222,7 @@ public class GameScene {
 
     /**
      * Moves all cells up
-     * @deprecated
+     * @deprecated Use CellGrid
      */
     private void moveUp() {
         for (int j = 0; j < n; j++) {
@@ -234,7 +238,7 @@ public class GameScene {
 
     /**
      * Moves all cells down
-     * @deprecated
+     * @deprecated Use CellGrid
      */
     private void moveDown() {
         for (int j = 0; j < n; j++) {
@@ -249,8 +253,8 @@ public class GameScene {
     }
 
     /**
-     * Checks if the horizontal movement is valid
-     * @deprecated
+     * Checks if the destination horizontally has a mergable cell
+     * @deprecated Use CellGrid.getValidPos
      * @param i - The index of the cell to be moved
      * @param j - The index of the cell to be moved
      * @param des - Destination horizontally
@@ -269,7 +273,7 @@ public class GameScene {
 
     /**
      * Moves all cells horizontally
-     * @deprecated
+     * @deprecated Use CellGrid.MoveLeft or MoveRight
      * @param i - The index of the cell to be moved
      * @param j - The index of the cell to be moved
      * @param des - Destination horizontally
@@ -286,7 +290,7 @@ public class GameScene {
 
     /**
      * Checks if vertical movement is valid
-     * @deprecated
+     * @deprecated Use CellGrid.getValidPos
      * @param i - The index of the cell to be moved
      * @param j - The index of the cell to be moved
      * @param des - Destination vertically
@@ -304,7 +308,7 @@ public class GameScene {
 
     /**
      * Moves all cells Vertically
-     * @deprecated
+     * @deprecated Use CellGrid.MoveUp or MoveDown
      * @param i - The index of the cell to be moved
      * @param j - The index of the cell to be moved
      * @param des - Destination vertically
@@ -321,7 +325,7 @@ public class GameScene {
 
     /**
      * Checks if right and bottom neighbours have the same value
-     * @deprecated
+     * @deprecated Use CellGrid.getValidPos for checking if a cell can merge
      * @param i - Position of the cell to be checked
      * @param j - Position of the cell to be checked
      * @return Returns whether a merge can be done
@@ -338,7 +342,7 @@ public class GameScene {
 
     /**
      * Checks if no cell can move
-     * @deprecated
+     * @deprecated Use CellGrid.canMove
      * @return Returns if the cell cannot move anymore
      */
     private boolean canNotMove() {
@@ -362,6 +366,20 @@ public class GameScene {
             }
         }
     }
+    
+	/**
+	 * Hides the texts of all zero cells in the grid. Unimplemented
+	 */
+	private void CullZeroes() {
+		//Unimplemented!
+	}
+	
+	/**
+	 * Displays this class' CellGrid via javafx.
+	 */
+	public void Display() {
+		//Unimplemented
+	}
 
     /**
      * Starts game
@@ -376,6 +394,7 @@ public class GameScene {
         //Replace with CellGrid.GenerateDefault
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
+            	//This is a headache. It's transposed for some reasons
                 cells[i][j] = new Cell((j) * getLength() + (j + 1) * distanceBetweenCells,
                         (i) * getLength() + (i + 1) * distanceBetweenCells, getLength(), root, getLength());
             }
