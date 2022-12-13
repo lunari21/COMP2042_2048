@@ -1,34 +1,22 @@
 package main.app;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import main.controller.AlertPopup;
-import main.controller.Controller;
 import main.controller.GameSceneController;
 import main.controller.MenuSceneController;
 import main.controller.SettingsController;
-import main.display.CellColor;
 import main.io.PrefFile;
 import main.io.PrefLoader;
 import main.io.PrefWriter;
-import main.io.SaveFile;
-import main.io.SaveLoader;
-import main.model.GameModel;
 
 public class Main extends Application {
     private static final int APPWIDTH = 360;

@@ -2,8 +2,6 @@ package main.io;
 
 import java.io.FileReader;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import main.controller.AlertPopup;
 import main.model.GameModel;
 

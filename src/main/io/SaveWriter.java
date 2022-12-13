@@ -2,8 +2,6 @@ package main.io;
 
 import java.io.FileWriter;
 import java.io.BufferedWriter;
-import main.model.GameModel;
-
 /**
  * Class designed for saving preferences and game progress, 
  * I honestly don't know what to name this class
