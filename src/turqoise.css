@@ -1,0 +1,84 @@
+.root{
+	-fx-background-color: #01161E;
+}
+
+.button{
+	-fx-background-color: #124559;
+	-fx-text-fill: #EFF6E0;
+	-fx-cursor: HAND;
+}
+
+.label{
+	-fx-text-fill:#EFF6E0;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #124559;
+}
+
+.combo-box-popup .list-view .list-cell{
+    -fx-background-color: #124559;
+}
+
+.combo-box-popup .list-view .list-cell .text{
+    -fx-font:18px "Lucida Sans";
+    -fx-fill: #EFF6E0;
+}
+
+.combo-box .list-cell .text{
+    -fx-font:18px "Lucida Sans";
+    -fx-fill: #EFF6E0;
+}
+
+.combo-box-base {
+    -fx-background-color: #124559;
+}
+
+
+.cell0{
+	-fx-fill:#01161E;
+}
+
+.cell2{
+	-fx-fill:#18333D;
+}
+
+.cell4{
+	-fx-fill:#223F4A;
+}
+
+.cell8{
+	-fx-fill:#2D4C58;
+}
+
+.cell16{
+	-fx-fill:#32525F;
+}
+
+.cell32{
+	-fx-fill:#365764;
+}
+
+.cell64{
+	-fx-fill:#496F7D;
+}
+
+.cell128{
+	-fx-fill:#598392;
+}
+
+.cell256{
+	-fx-fill:#6E939A;
+}
+
+.cell512{
+	-fx-fill:#83A3A1;
+}
+
+.cell1024{
+	-fx-fill:#98B3A8;
+}
+
+.cell2048{
+	-fx-fill:#E19E86;
+}

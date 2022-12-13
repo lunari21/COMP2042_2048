@@ -1,0 +1,79 @@
+.root{
+	-fx-background-color: #;
+}
+
+.button{
+	-fx-background-color: #;
+	-fx-text-fill: #;
+	-fx-cursor: HAND;
+}
+
+.label{
+	-fx-text-fill:#;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #;
+}
+
+.combo-box-popup .list-view .virtual-flow .list-cell .text{
+    -fx-font: ;
+    -fx-fill: #;
+}
+
+.combo-box .list-cell .text{
+    -fx-font: ;
+    -fx-fill: #;
+}
+
+.combo-box-base {
+    -fx-background-color: #;
+}
+
+.cell0{
+	-fx-fill:#;
+}
+
+.cell2{
+	-fx-fill:#;
+}
+
+.cell4{
+	-fx-fill:#;
+}
+
+.cell8{
+	-fx-fill:#;
+}
+
+.cell16{
+	-fx-fill:#;
+}
+
+.cell32{
+	-fx-fill:#;
+}
+
+.cell64{
+	-fx-fill:#;
+}
+
+.cell128{
+	-fx-fill:#;
+}
+
+.cell256{
+	-fx-fill:#;
+}
+
+.cell512{
+	-fx-fill:#;
+}
+
+.cell1024{
+	-fx-fill:#;
+}
+
+.cell2048{
+	-fx-fill:#;
+}
