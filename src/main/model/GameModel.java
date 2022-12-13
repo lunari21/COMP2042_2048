@@ -3,21 +3,23 @@ package main.model;
 import java.util.Random;
 
 /**
- * Models game behaviour
- * This includes, turn advancement and score counting.
+ * Encapsulates and puts into context the functionality of CellGrid.
+ * Manages aspects of the game such as movement of cells, cell spawning and score tracking.
  * @author Alexander Tan Ka Jin
- * @version 0
+ * @version 2
  */
 public class GameModel {
-	/*
-	 * The move methods are in CellGrid instead of here. This class puts those methods in
-	 * the context of a single turn of 2048.
-	 */
 	private CellGrid grid;// game board
 	private boolean[][] blocked; // Temporary grid representing cells that have already been merged
 	private long seed;
 	private Random rng;
 
+	/**
+	 * Creates new a model of 2048
+	 * @param boardHeight - The height of the grid
+	 * @param boardWidth - The width of the grid
+	 * @param seed - The rng seed of the game
+	 */
 	public GameModel(int boardHeight, int boardWidth, long seed) {
 		this.grid = new CellGrid(boardWidth, boardHeight);
 		this.blocked = new boolean[boardHeight][boardWidth];
@@ -26,21 +28,43 @@ public class GameModel {
 		SpawnCell();//Initialize starting state.
 	}
 
+	/**
+	 * @return This game's cell grid.
+	 */
 	public CellGrid getCellGrid() {
 		return grid;
 	}
 	
+	/**
+	 * @return This game's rng seed
+	 */
 	public long getSeed() {
 		return seed;
 	}
 
+	/**
+	 * @return This game's Random Number Generator
+	 */
 	public Random getRng() {
 		return rng;
 	}
 	
 	/**
+	 * @return The score of the game which is caluclated by summing up all the cells on the board.
+	 */
+	public int getScore() {
+		int score = 0;
+		for (int y = 0; y <= grid.getDownEdge(); y++) {
+			for (int x = 0; x <= grid.getRightEdge(); x++) {
+				score += grid.getCell(x, y);
+			}
+		}
+		return score;
+	}
+	
+	/**
 	 * Checks if you have won the game
-	 * @return true if you have won the game, false otherwise
+	 * @return True if you have won the game, False otherwise
 	 */
 	public boolean isWin() {
 		return grid.contains(2048);
@@ -48,15 +72,15 @@ public class GameModel {
 
 	/**
 	 * Checks if you have lost the game
-	 * @return true if the game is lost, false otherwise
+	 * @return True if the game is lost, False otherwise
 	 */
 	public boolean isLose() {
 		return !canMove() && !grid.contains(0);
 	}
 
 	/**
-	 * Randomly spawns a 2/4 cell at a random position at the grid
-	 * @return this object
+	 * Randomly spawns a 2 or 4 valued cell at a random position at the grid
+	 * @return This object
 	 */
 	public GameModel SpawnCell() {
 		SetAtRandomCell(getNextCell());
@@ -64,8 +88,8 @@ public class GameModel {
 	}
 
 	/**
-	 * Empties grid and resets turn counter
-	 * @return this object
+	 * Empties grid
+	 * @return This object
 	 */
 	public GameModel Reset() {
 		grid.setGrid(new int[grid.getRightEdge()+1][grid.getDownEdge()+1]); //empty grid
@@ -74,8 +98,8 @@ public class GameModel {
 	}
 
 	/**
-	 * Converts the board into string
-	 * @return string
+	 * Converts the board into string for ease of saving.
+	 * @return A representation of the board as a string. Bars (|) represent cell borders while Percents (%) represent a new row.
 	 */
 	public String BoardToString() {
 		String out = "";
@@ -90,9 +114,9 @@ public class GameModel {
 	}
 
 	/**
-	 * Moves in accordance with dir. If the grid changed states, then advances the turn.
-	 * @param dir
-	 * @return
+	 * Moves in accordance with a given direction. If the grid changed states, then advances the turn.
+	 * @param dir - The direction to move to (LEFT,RIGHT,UP,DOWN)
+	 * @return This object
 	 */
 	public GameModel Move(MoveDirection dir) {
 		CellGrid prev = grid.clone();
@@ -119,17 +143,7 @@ public class GameModel {
 		}
 		return this;
 	}
-
-	public int getScore() {
-		int score = 0;
-		for (int y = 0; y <= grid.getDownEdge(); y++) {
-			for (int x = 0; x <= grid.getRightEdge(); x++) {
-				score += grid.getCell(x, y);
-			}
-		}
-		return score;
-	}
-
+	
 	/**
 	 * Gets the next cell on the start of a turn.
 	 * @return random integer 2 or 4
@@ -140,8 +154,7 @@ public class GameModel {
 
 	/**
 	 * Sets a value onto a random cell in it's internal grid
-	 * @param val - int
-	 * @param rand - Random
+	 * @param val - value
 	 * @return this object
 	 */
 	private GameModel SetAtRandomCell(int val) {
@@ -159,6 +172,10 @@ public class GameModel {
 		return this;
 	}
 
+	/**
+	 * Checks if the board can move by checking if each cell can move right/down
+	 * @return True if can move, false elsewise.
+	 */
 	private boolean canMove() {
 		for (int y = 0; y <= grid.getDownEdge(); y++) {
 			for (int x = 0; x <= grid.getRightEdge(); x++) {
@@ -180,11 +197,13 @@ public class GameModel {
 		}
 		return false;
 	}
-	/**
+	/*
 	 * Returns furthest movable position left without merging
 	 * The following functions do the same. They are split
 	 * Due to the need for scanning in certain directions.
 	 */
+	
+	//Gets the furthest movable position left without merging
 	private int getFurthestPosLeft(int posX, int posY) {
 		//To left of cell until the most left cell
 		for (int pointer = posX-1; pointer >= grid.getLeftEdge(); pointer--) {
@@ -198,6 +217,7 @@ public class GameModel {
 				  		 		   //put this cell to the edge cell
 	}
 
+	//Gets the furthest movable position right without merging
 	private int getFurthestPosRight(int posX, int posY) {
 		for (int pointer = posX+1; pointer <= grid.getRightEdge(); pointer++) {
 			int pointedCell = grid.getCell(pointer,posY);
@@ -209,6 +229,7 @@ public class GameModel {
 		return grid.getRightEdge();
 	}
 
+	//Gets the furthest movable position up without merging
 	private int getFurthestPosUp(int posX, int posY) {
 		for (int pointer = posY-1; pointer >= grid.getUpEdge(); pointer--) {
 			int pointedCell = grid.getCell(posX,pointer);
@@ -220,6 +241,7 @@ public class GameModel {
 		return grid.getUpEdge();
 	}
 
+	//Gets the furthest movable position down without merging
 	private int getFurthestPosDown(int posX, int posY) {
 		for (int pointer = posY+1; pointer <= grid.getDownEdge(); pointer++) {
 			int pointedCell = grid.getCell(posX,pointer);
@@ -274,14 +296,14 @@ public class GameModel {
 		return fromCell == toCell && !isToCellBlocked;
 	}
 
-	/**
-	 * Gets a valid vector position for moving in 2048 in the rows
-	 */
+	// Gets a valid vector position for moving in 2048 given a certain direction.
 	private int[] getValidPos(int posX, int posY, MoveDirection dir) {
-		int[] furthest = getFurthestPos(posX,posY,dir); //position if not merging
+		int[] furthest = getFurthestPos(posX,posY,dir); //furthest position if not merging
 		int offsetX = 0;
 		int offsetY = 0;
 
+		//Retrieve merge offsets in a given direction.
+		//These will be used when a merge can occur.
 		switch(dir) {
 		case LEFT:
 			offsetX = -1;
@@ -296,42 +318,54 @@ public class GameModel {
 			offsetY = +1;
 			break;
 		}
-
-		if (!isEdge(furthest[0],furthest[1],dir)) {
+		
+		int furthestX = furthest[0];
+		int furthestY = furthest[1];
+		//Check if moving places the cell at the edge
+		if (!isEdge(furthestX,furthestY,dir)) {
 			//position of a neighbour cell in given direction
-			int[] neighbourPos = new int[]{furthest[0]+offsetX,furthest[1]+offsetY};
-			boolean canMerge = cellsCanMerge(posX,posY,neighbourPos[0],neighbourPos[1]);
+			int neighbourPosX = furthestX+offsetX;
+			int neighbourPosY = furthestY+offsetY;
+			//Check can merge
+			boolean canMerge = cellsCanMerge(posX,posY,neighbourPosX,neighbourPosY);
 
 			if (canMerge)
-				return neighbourPos;
+				//Returns neighbour if can merge
+				return new int[] {neighbourPosX, neighbourPosY};
 			else
+				//Returns empty cell next to neighbour elsewise.
 				return furthest;
 		}
 
+		//If cell is about to go to edge, then the furthest position is returned instead.
 		return furthest;
 	}
-
+	
+	//Moves cell top direction
 	private GameModel MoveCell(int x, int y, MoveDirection dir) {
-		int pointedCell = grid.getCell(x, y);
+		int pointedCell = grid.getCell(x, y); //get the cell to be moved
 		if (pointedCell != 0) {
-			int[] dest = getValidPos(x,y,dir);
-			int newValue = grid.getCell(x,y);
-			boolean isDestBlocked = blocked[dest[1]][dest[0]];
+			int[] dest = getValidPos(x,y,dir); //calculated destination
+			boolean destNotBlocked = !blocked[dest[1]][dest[0]];
 
 			grid.setCell(x, y, 0); //reset cell first.
 			//This is because destination can be equal to pointed position.
 
-			if (grid.getCell(dest[0], dest[1]) == newValue && !isDestBlocked) {
-				blocked[dest[1]][dest[0]] = true;
-				newValue = newValue * 2;
+			//If destination is equivalent to the pointedCell, merge.
+			if (grid.getCell(dest[0], dest[1]) == pointedCell && destNotBlocked) {
+				blocked[dest[1]][dest[0]] = true; //block so that chain merges can't happen.
+				pointedCell = pointedCell * 2; //double value.
 			}
 
-			grid.setCell(dest[0], dest[1], newValue);
+			grid.setCell(dest[0], dest[1], pointedCell);
 		}
 
 		return this;
 	}
 
+	/*
+	 * Following functions all describe movement. Again, seperated because they need to scan at different directions.
+	 */
 	private GameModel MoveLeft() {
 		//from top to bottom
 		for (int y = grid.getUpEdge(); y <= grid.getDownEdge(); y++) {
@@ -376,6 +410,7 @@ public class GameModel {
 		return this;
 	}
 
+	//Flush the blocked grid and resets it to false.
 	private boolean[][] flushBlocked() {
 		for (int y = 0; y < blocked.length; y++) {
 			for (int x = 0; x < blocked[0].length; x++) {
