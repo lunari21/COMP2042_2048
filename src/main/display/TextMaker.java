@@ -1,4 +1,4 @@
-package com.example.demo;
+package main.display;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,18 +18,18 @@ public class TextMaker {
 	 * @param sceneLength - Length of the scene
 	 * @return text object with white font
 	 */
-    public static Text formatText(String input, double cellPosX, double cellPosY, double sceneLength) {
+    public static Text formatWhiteText(String input, double cellPosX, double cellPosY, double sceneLength) {
     	//Honestly this method is really weird.
     	double unknownDivider = 7.0; //Not sure what it does precisely
     	double fontScale = 3;
     	double xScale = 1.2;
     	double yScale = 2;
-    	
+
         double fontSize = (fontScale * sceneLength) / unknownDivider;
         Color whiteColor = Color.WHITE;
         double cellPosXScaled = cellPosX + xScale * sceneLength / unknownDivider;
         double cellPosYScaled = cellPosY + yScale * sceneLength / unknownDivider;
-        
+
         //Create text
         Text text = new Text(input);
         text.setFont(Font.font(fontSize));
@@ -51,7 +51,7 @@ public class TextMaker {
         first.setText(second.getText());
         second.setText(tempText);
     }
-    
+
     /**
      * Swaps the X and Y position of two text objects
      * @param first - Text object
