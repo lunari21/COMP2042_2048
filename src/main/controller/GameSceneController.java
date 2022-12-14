@@ -170,8 +170,7 @@ public class GameSceneController implements Controller {
 	public void finalizeController() {
 		loadScore(new File(scorePath));
 		GetCellReferences(Width,Height);
-	};
-	
+	}	
 	/**
 	 * Triggered when the scene is loaded onto the primary stage
 	 */
