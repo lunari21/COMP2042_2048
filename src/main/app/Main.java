@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.stage.StageStyle;
 import main.controller.AlertPopup;
 import main.controller.GameSceneController;
 import main.controller.MenuSceneController;
@@ -21,10 +21,16 @@ import main.io.PrefFile;
 import main.io.PrefLoader;
 import main.io.PrefWriter;
 
+/**
+ * Main class
+ * @author Alexander Tan Ka Jin
+ */
 public class Main extends Application {
+	//Application settings
     private static final int APPWIDTH = 360;
     private static final int APPHEIGHT = 440;
 
+    //Paths
     private static final String resources = "/main/resources/";
     private static final String absoluteRsc = "src/main/resources/";
     private static final String gameFXML = "scenes/GameScene.fxml";
@@ -42,6 +48,7 @@ public class Main extends Application {
 
     private SceneManager activeScenes;
     
+    //Load preferences
     private String loadPreference() {
     	File prefFile = new File(absoluteRsc + prefPath);
     	
@@ -61,6 +68,7 @@ public class Main extends Application {
     	return PrefLoader.loadPref(absoluteRsc + prefPath).getCss();
     }
     
+    //Sets up a loader for each scene
     private FXMLLoader load (String fxmlFile) {
     	try {
     		File SceneFile = new File(absoluteRsc + fxmlFile);
@@ -77,6 +85,7 @@ public class Main extends Application {
     	return null;
     }
     
+    //Loads scene
     private Scene loadScene(FXMLLoader loader, String name) {
     	if (loader == null)
     		return null;
@@ -91,7 +100,7 @@ public class Main extends Application {
     	return null;
     }
     
-    //inits controller logic and load scene
+    //initialize controller logic and load scene
     private GameSceneController initGame(int Width, int Height, FXMLLoader loader
     					   				, String saveFilePath, String scoreFilePath, String menu, String name) { 	
 		
@@ -122,6 +131,7 @@ public class Main extends Application {
 		return gameControl;
     }
     
+    //Initialize menu scene
     private MenuSceneController initMenu(FXMLLoader menuLoader, String game, String fivefive, String sevenseven, String settings) {
     	//init controller
     	MenuSceneController menuControl = menuLoader.<MenuSceneController>getController();
@@ -139,6 +149,7 @@ public class Main extends Application {
     	return menuControl;
     }
     
+    //Initialize settings scene
     private SettingsController initSettings(FXMLLoader settingsLoader, String menu , String themePrompt) {
     	SettingsController settingControl = settingsLoader.<SettingsController>getController();
     	
@@ -152,20 +163,24 @@ public class Main extends Application {
     	settingControl.setMenu(menu);
     	
     	settingControl.finalizeController();
+    	
     	return settingControl;
     }
     
     @Override
     public void start(Stage primaryStage) {
     	try {
+    		//Init scenemanager
     		this.activeScenes = new SceneManager(primaryStage);
     		
+    		//Load themes
     		String theme = loadPreference();
     		if (theme == null) {
     			AlertPopup.errorPopup("pink.css not present in src folder.");
     			return;
     		}
     		
+    		//Load scenes
     		FXMLLoader menuLoader = load(menuFXML);
     		Scene menu = loadScene(menuLoader, "menu");
     		if (menu == null || menuLoader == null) {
@@ -208,10 +223,15 @@ public class Main extends Application {
     		initMenu(menuLoader, "game", "game5x5", "game7x7", "settings");
     		initSettings(settingsLoader, "menu", theme.split("\\.")[0]);
     		
+    		//Update the styles of every scene
     		activeScenes.SetActiveTheme(theme);
     		
+    		//Initialize stage
+    		primaryStage.setResizable(false); //No reszing!
     		primaryStage.setTitle("Too Zero For Eight");
-        	primaryStage.setScene(menu);
+        	
+        	//display menu
+    		primaryStage.setScene(menu);
         	primaryStage.show();
     	} catch (Exception e) {
     		e.printStackTrace();
