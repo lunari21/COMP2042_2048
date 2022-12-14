@@ -152,7 +152,7 @@ public class Main extends Application {
     	
     	settingControl.setScenes(activeScenes);
     	settingControl.setInitialTheme(themePrompt.split("\\.")[0]);
-    	settingControl.setCssPath("src/main/");
+    	settingControl.setCssPath("src/");
     	settingControl.setPrefPath(resources + prefPath);
     	settingControl.setMenu(menu);
     	
