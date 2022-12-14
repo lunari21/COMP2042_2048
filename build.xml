@@ -130,68 +130,8 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="CellGrid_test">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="main.java.tests.CellGrid_test" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.CellGrid_test.classpath"/>
-        </junit>
-    </target>
-    <target name="Cell_test">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="main.java.tests.Cell_test" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.Cell_test.classpath"/>
-        </junit>
-    </target>
-    <target name="GameModelTest (1)">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="main.tests.GameModelTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.GameModelTest (1).classpath"/>
-        </junit>
-    </target>
-    <target name="GameModelTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="main.java.tests.GameModelTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.GameModelTest.classpath"/>
-        </junit>
-    </target>
-    <target name="GameScene_test">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="main.java.tests.GameScene_test" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.GameScene_test.classpath"/>
-        </junit>
-    </target>
-    <target name="jfx_config">
-        <java classname="main.Main" failonerror="true" fork="yes">
-            <jvmarg line="--module-path 'C:\Docs\Homework\SoftwareDevHomework\game_2048\lib';'C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib' --add-modules=javafx.controls,javafx.fxml"/>
-            <classpath refid="run.jfx_config.classpath"/>
-        </java>
-    </target>
-    <target name="TextMaker_test">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="main.java.tests.TextMaker_test" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.TextMaker_test.classpath"/>
-        </junit>
-    </target>
     <target name="release">
-        <java classname="mai.Main" failonerror="true" fork="yes">
+        <java classname="main.java.Main" failonerror="true" fork="yes">
             <jvmarg line="--module-path 'C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib' --add-modules=javafx.controls,javafx.fxml"/>
             <classpath refid="run.release.classpath"/>
         </java>
