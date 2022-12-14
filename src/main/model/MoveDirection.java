@@ -5,7 +5,7 @@ package main.model;
  * 
  * @author Alexander Tan Ka Jin
  */
-public enum MoveDirection() {
+public enum MoveDirection{
 	LEFT,
 	RIGHT,
 	UP,
