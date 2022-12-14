@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"game_2048","l":"main.app"},{"m":"game_2048","l":"main.controller"},{"m":"game_2048","l":"main.io"},{"m":"game_2048","l":"main.model"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"game_2048","l":"main.controller"},{"m":"game_2048","l":"main.io"},{"m":"game_2048","l":"main.java"},{"m":"game_2048","l":"main.model"}];updateSearchResults();
