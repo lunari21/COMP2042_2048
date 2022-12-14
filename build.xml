@@ -10,125 +10,87 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="17"/>
     <property name="source" value="17"/>
+    <path id="JavaFXx64.userclasspath">
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.base.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.controls.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.fxml.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.graphics.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.media.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.swing.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx.web.jar"/>
+        <pathelement location="../../../../kac/Java/openjfx-19-sdk-x64/javafx-sdk-19/lib/javafx-swt.jar"/>
+    </path>
     <path id="game_2048.classpath">
         <pathelement location="bin"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.CellGrid_test.classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.Cell_test.classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.GameModelTest (1).classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.GameModelTest.classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.GameScene_test.classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.jfx_config.classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
-    </path>
-    <path id="run.Main (1).classpath">
-        <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
-        <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
-    </path>
-    <path id="run.Main.classpath">
-        <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
-        <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <path id="run.TextMaker_test.classpath">
         <path refid="game_2048.classpath"/>
-        <pathelement location="lib/javafx.base.jar"/>
-        <pathelement location="lib/javafx.controls.jar"/>
-        <pathelement location="lib/javafx.fxml.jar"/>
-        <pathelement location="lib/javafx.graphics.jar"/>
-        <pathelement location="lib/javafx.media.jar"/>
-        <pathelement location="lib/javafx.swing.jar"/>
-        <pathelement location="lib/javafx.web.jar"/>
-        <pathelement location="lib/javafx-swt.jar"/>
         <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
+    </path>
+    <path id="run.release.classpath">
+        <path refid="game_2048.classpath"/>
+        <pathelement location="lib/junit-jupiter-api_5.9.0.jar"/>
+        <pathelement location="lib/junit-platform-commons_1.9.0.jar"/>
+        <pathelement location="lib/org.apiguardian.api_1.1.2.jar"/>
+        <pathelement location="lib/org.opentest4j_1.2.0.jar"/>
+        <path refid="JavaFXx64.userclasspath"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -150,8 +112,8 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
+        	<compilerarg line="--module-path 'C:\Docs\Homework\SoftwareDevHomework\game_2048\lib\';'C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib'"/>
             <classpath refid="game_2048.classpath"/>
-        	<compilerarg line="--module-path 'C:\Docs\Homework\SoftwareDevHomework\game_2048\lib\';'C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib\'"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
@@ -214,19 +176,9 @@
         </junit>
     </target>
     <target name="jfx_config">
-        <java classname="main.app.Main" failonerror="true" fork="yes">
-            <jvmarg line="--module-path &quot;C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib&quot; --add-modules javafx.controls,javafx.fxml --module-path"/>
+        <java classname="main.Main" failonerror="true" fork="yes">
+            <jvmarg line="--module-path 'C:\Docs\Homework\SoftwareDevHomework\game_2048\lib';'C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib' --add-modules=javafx.controls,javafx.fxml"/>
             <classpath refid="run.jfx_config.classpath"/>
-        </java>
-    </target>
-    <target name="Main (1)">
-        <java classname="main.app.Main" failonerror="true" fork="yes">
-            <classpath refid="run.Main (1).classpath"/>
-        </java>
-    </target>
-    <target name="Main">
-        <java classname="main.java.Main" failonerror="true" fork="yes">
-            <classpath refid="run.Main.classpath"/>
         </java>
     </target>
     <target name="TextMaker_test">
@@ -237,6 +189,12 @@
             <jvmarg line="-ea"/>
             <classpath refid="run.TextMaker_test.classpath"/>
         </junit>
+    </target>
+    <target name="release">
+        <java classname="mai.Main" failonerror="true" fork="yes">
+            <jvmarg line="--module-path 'C:\kac\Java\openjfx-19-sdk-x64\javafx-sdk-19\lib' --add-modules=javafx.controls,javafx.fxml"/>
+            <classpath refid="run.release.classpath"/>
+        </java>
     </target>
     <target name="junitreport">
         <junitreport todir="${junit.output.dir}">

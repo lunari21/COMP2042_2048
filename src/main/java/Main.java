@@ -1,4 +1,4 @@
-package main.app;
+package main.java;
 
 import java.io.File;
 import java.util.Date;
@@ -27,27 +27,25 @@ public class Main extends Application {
     private static final int APPHEIGHT = 440;
 
     //Paths
-    private static final String resources = "/main/resources/";
-    private static final String absoluteRsc = "src/main/resources/";
-    private static final String gameFXML = "scenes/GameScene.fxml";
-    private static final String game5x5FXML = "scenes/Game5x5.fxml";
-    private static final String game7x7FXML = "scenes/Game7x7.fxml";
-    private static final String menuFXML = "scenes/MenuScene.fxml";
-    private static final String settingFXML = "scenes/SettingsScene.fxml";
-    private static final String savePath = "/savefiles/save.txt";
-    private static final String save5x5Path = "/savefiles/save5x5.txt";
-    private static final String save7x7Path = "/savefiles/save7x7.txt";
-    private static final String scorePath = "/savefiles/score.txt";
-    private static final String score5x5Path = "/savefiles/score5x5.txt";
-    private static final String score7x7Path = "/savefiles/score7x7.txt";
-    private static final String prefPath = "/savefiles/pref.txt";
+    private static final String resources = "./resources/";
+    private static final String gameFXML = "/scenes/GameScene.fxml";
+    private static final String game5x5FXML = "/scenes/Game5x5.fxml";
+    private static final String game7x7FXML = "/scenes/Game7x7.fxml";
+    private static final String menuFXML = "/scenes/MenuScene.fxml";
+    private static final String settingFXML = "/scenes/SettingsScene.fxml";
+    private static final String savePath = "savefiles/save.txt";
+    private static final String save5x5Path = "savefiles/save5x5.txt";
+    private static final String save7x7Path = "savefiles/save7x7.txt";
+    private static final String scorePath = "savefiles/score.txt";
+    private static final String score5x5Path = "savefiles/score5x5.txt";
+    private static final String score7x7Path = "savefiles/score7x7.txt";
+    private static final String prefPath = "savefiles/pref.txt";
 
     private SceneManager activeScenes;
     
     //Load preferences
     private String loadPreference() {
-    	File prefFile = new File(absoluteRsc + prefPath);
-    	
+    	File prefFile = new File(resources + prefPath);
     	if (!prefFile.exists()) { //if not exist
     		//Check default css (pink.css)
     		File pinkCSS = new File("src/pink.css");
@@ -57,22 +55,22 @@ public class Main extends Application {
     		//else, set the theme to be pink.css by default
     		PrefFile defaultPref = new PrefFile();
     		defaultPref.setCss("pink.css");
-    		PrefWriter.save(absoluteRsc + prefPath, defaultPref);
+    		PrefWriter.save(resources + prefPath, defaultPref);
     	}
     	
     	//Load the theme
-    	return PrefLoader.loadPref(absoluteRsc + prefPath).getCss();
+    	return PrefLoader.loadPref(resources + prefPath).getCss();
     }
     
     //Sets up a loader for each scene
     private FXMLLoader load (String fxmlFile) {
     	try {
-    		File SceneFile = new File(absoluteRsc + fxmlFile);
+    		File SceneFile = new File("src/main"+fxmlFile);
     		if (!SceneFile.exists())
     			return null;
     		
     		FXMLLoader loader = new FXMLLoader();
-    		loader.setLocation(getClass().getResource(resources + fxmlFile));
+    		loader.setLocation(getClass().getResource("/main"+fxmlFile));
     		return loader;
     	}catch (Exception e){
     		e.printStackTrace();
@@ -109,8 +107,8 @@ public class Main extends Application {
     	gameControl.setDimensions(Width, Height);
    		gameControl.setSeed((new Date()).getTime());
     		
-		gameControl.setSavePath(absoluteRsc + saveFilePath);
-		gameControl.setScorePath(absoluteRsc + scoreFilePath);
+		gameControl.setSavePath(resources + saveFilePath);
+		gameControl.setScorePath(resources + scoreFilePath);
 		gameControl.setEscScene(menu);
 		
 		gameControl.finalizeController();
@@ -154,8 +152,8 @@ public class Main extends Application {
     	
     	settingControl.setScenes(activeScenes);
     	settingControl.setInitialTheme(themePrompt.split("\\.")[0]);
-    	settingControl.setCssPath("src/");
-    	settingControl.setPrefPath(absoluteRsc + prefPath);
+    	settingControl.setCssPath("src/main/");
+    	settingControl.setPrefPath(resources + prefPath);
     	settingControl.setMenu(menu);
     	
     	settingControl.finalizeController();
