@@ -17,7 +17,7 @@ Eclipse and JavaFX-x64:
 4. Open Eclipse and select File->Import->Archive File
 5. Select the archive and press finish
 6. Right click on the project folder and select your JavaFX library.
-7. Build using the build.xml
+7. Build by running ant
 ```
 If you do not have a JavaFX library referenced already:
 ```
