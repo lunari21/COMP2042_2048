@@ -1,10 +1,17 @@
 package main.controller;
 
-import javafx.stage.Stage;
-
+/**
+ * Controller interface with some basic events that may be used.
+ * @author Alexander Tan Ka Jin
+ */
 public interface Controller {
-	public Stage setRoot(Stage root);
+	//Set root deprecated due to scenemanager
+	/**
+	 * Called whenever the scene is loaded onto the primary stage.
+	 */
 	public void OnSceneEnter();
-	public Controller init();
-	public Controller bindButtons();
+	/**
+	 * Called last when before loading the controller.
+	 */
+	public void finalizeController();
 }

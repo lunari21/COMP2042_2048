@@ -10,10 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import main.controller.AlertPopup;
 import main.controller.GameSceneController;
 import main.controller.MenuSceneController;
+import main.controller.SceneManager;
 import main.controller.SettingsController;
+
 import main.io.PrefFile;
 import main.io.PrefLoader;
 import main.io.PrefWriter;
@@ -37,22 +40,7 @@ public class Main extends Application {
     private static final String score7x7Path = "/savefiles/score7x7.txt";
     private static final String prefPath = "/savefiles/pref.txt";
 
-    private List<Scene> themeUpdateList;
-    
-    private void setStyle(Scene target, String cssPath) {
-    	if (cssPath == "")
-    		return; //do nothing
-    	
-    	target.getStylesheets().clear();
-    	target.getStylesheets().addAll(cssPath);
-    }
-    
-    //This class is public because settings scene needs to communicate with the application.
-    //So that it can update the scenes without knowing them.
-    public void UpdateThemes (String cssPath) {
-    	for (Scene scene:themeUpdateList)
-    		setStyle(scene,cssPath);
-    }
+    private SceneManager activeScenes;
     
     private String loadPreference() {
     	File prefFile = new File(absoluteRsc + prefPath);
@@ -89,13 +77,13 @@ public class Main extends Application {
     	return null;
     }
     
-    private Scene loadScene(FXMLLoader loader) {
+    private Scene loadScene(FXMLLoader loader, String name) {
     	if (loader == null)
     		return null;
 
     	try {
     		Scene scene = new Scene(loader.<Parent>load(),APPWIDTH,APPHEIGHT);
-    		this.themeUpdateList.add(scene);
+    		activeScenes.addActiveScene(name, scene);
     		return scene;
     	}catch(Exception e) {
     		e.printStackTrace();
@@ -104,82 +92,73 @@ public class Main extends Application {
     }
     
     //inits controller logic and load scene
-    private GameSceneController initGame(Stage root, int Width, int Height, FXMLLoader loader
-    					   				, String saveFilePath, String scoreFilePath, Scene menu, Scene game) { 	
+    private GameSceneController initGame(int Width, int Height, FXMLLoader loader
+    					   				, String saveFilePath, String scoreFilePath, String menu, String name) { 	
 		
 		GameSceneController gameControl = loader.<GameSceneController>getController();
 		
 		if (gameControl == null)
 			return null;
 		
+		gameControl.setSceneManager(activeScenes);
     	gameControl.setDimensions(Width, Height);
    		gameControl.setSeed((new Date()).getTime());
     		
-		gameControl.setRoot(root);
 		gameControl.setSavePath(absoluteRsc + saveFilePath);
 		gameControl.setScorePath(absoluteRsc + scoreFilePath);
-		gameControl.setMenuSceneReference(menu);
+		gameControl.setEscScene(menu);
 		
-		gameControl.init();
+		gameControl.finalizeController();
 		
 		//load scene and set keybind
 		try {			
 			//Sets up key binding
-			game.setOnKeyPressed(e -> {gameControl.OnKeyPressed(e);});
+			activeScenes.get(name).setOnKeyPressed(e -> {gameControl.OnKeyPressed(e);});
 			//Sets up an event when root swaps to the game scene.
-			root.sceneProperty().addListener((observable, oldScene, newScene) -> {
-			    if (game != null && newScene == game) {
-			    	gameControl.OnSceneEnter();
-			    }
-			});
+			activeScenes.BindOnEnter(name, gameControl);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return gameControl;
     }
     
-    private MenuSceneController initMenu(Stage root, FXMLLoader menuLoader, Scene game, Scene fivefive, Scene sevenseven, Scene settings) {
+    private MenuSceneController initMenu(FXMLLoader menuLoader, String game, String fivefive, String sevenseven, String settings) {
     	//init controller
     	MenuSceneController menuControl = menuLoader.<MenuSceneController>getController();
     	if (menuControl == null)
     		return null;
     	
-    	menuControl.setRoot(root);
-    	menuControl.setStandardPlayScene(game);
-    	menuControl.setFiveXFivePlayScene(fivefive);
-    	menuControl.setSevenXSevenPlayScene(sevenseven);
-    	menuControl.setSettingsScene(settings);
+    	menuControl.setSceneManager(activeScenes);
+    	menuControl.setStandardPlay(game);
+    	menuControl.setFiveXFivePlay(fivefive);
+    	menuControl.setSevenXSevenPlay(sevenseven);
+    	menuControl.setSettings(settings);
     	
-    	menuControl.bindButtons();
+    	menuControl.finalizeController();
     	
     	return menuControl;
     }
     
-    private SettingsController initSettings(Stage root, FXMLLoader settingsLoader, Scene menu , String themePrompt) {
+    private SettingsController initSettings(FXMLLoader settingsLoader, String menu , String themePrompt) {
     	SettingsController settingControl = settingsLoader.<SettingsController>getController();
     	
     	if (settingControl == null)
     		return null;
     	
-    	settingControl.setRoot(root);
+    	settingControl.setScenes(activeScenes);
     	settingControl.setInitialTheme(themePrompt.split("\\.")[0]);
     	settingControl.setCssPath("src/");
     	settingControl.setPrefPath(absoluteRsc + prefPath);
-    	settingControl.setMenuScene(menu);
-    	settingControl.setApp(this); //This controller needs a reference to the main app for changing css.
+    	settingControl.setMenu(menu);
     	
-    	settingControl.init();
-
-    	settingControl.bindButtons();
-    	
+    	settingControl.finalizeController();
     	return settingControl;
     }
     
     @Override
     public void start(Stage primaryStage) {
     	try {
-    		//check if preferences can be loaded, else quit.
-    		this.themeUpdateList = new ArrayList<Scene>();
+    		this.activeScenes = new SceneManager(primaryStage);
     		
     		String theme = loadPreference();
     		if (theme == null) {
@@ -188,48 +167,48 @@ public class Main extends Application {
     		}
     		
     		FXMLLoader menuLoader = load(menuFXML);
-    		Scene menu = loadScene(menuLoader);
+    		Scene menu = loadScene(menuLoader, "menu");
     		if (menu == null || menuLoader == null) {
     			AlertPopup.errorPopup("MenuScene not found");
     			return;
     		}
     		
     		FXMLLoader gameLoader = load(gameFXML);
-    		Scene game = loadScene(gameLoader);
+    		Scene game = loadScene(gameLoader, "game");
     		if (game == null || gameLoader == null) {
     			AlertPopup.errorPopup("GameScene not found");
     			return;
     		}
     		
     		FXMLLoader game5x5Loader = load(game5x5FXML);
-    		Scene game5x5 = loadScene(game5x5Loader);
+    		Scene game5x5 = loadScene(game5x5Loader, "game5x5");
     		if (game5x5 == null || game5x5Loader == null) {
     			AlertPopup.errorPopup("Game5x5 not found");
     			return;
     		}
     		
     		FXMLLoader game7x7Loader = load(game7x7FXML);
-    		Scene game7x7 = loadScene(game7x7Loader);
+    		Scene game7x7 = loadScene(game7x7Loader, "game7x7");
     		if (game7x7 == null || game7x7Loader == null) {
     			AlertPopup.errorPopup("Game7x7 not found");
     			return;
     		}
     		
     		FXMLLoader settingsLoader = load(settingFXML);
-    		Scene settings = loadScene(settingsLoader);
+    		Scene settings = loadScene(settingsLoader, "settings");
     		if (settings == null || settingsLoader == null) {
     			AlertPopup.errorPopup("SettingsScene not found");
     			return;
     		}
     		
     		//Initialize controllers
-    		initGame(primaryStage, 4, 4, gameLoader, savePath, scorePath, menu, game);
-    		initGame(primaryStage, 5, 5, game5x5Loader, save5x5Path, score5x5Path, menu, game5x5);
-    		initGame(primaryStage, 7, 7, game7x7Loader, save7x7Path, score7x7Path, menu, game7x7);
-    		initMenu(primaryStage, menuLoader, game, game5x5, game7x7, settings);
-    		initSettings(primaryStage, settingsLoader, menu, theme.split("\\.")[0]);
+    		initGame(4, 4, gameLoader, savePath, scorePath, "menu", "game");
+    		initGame(5, 5, game5x5Loader, save5x5Path, score5x5Path, "menu", "game5x5");
+    		initGame(7, 7, game7x7Loader, save7x7Path, score7x7Path, "menu", "game7x7");
+    		initMenu(menuLoader, "game", "game5x5", "game7x7", "settings");
+    		initSettings(settingsLoader, "menu", theme.split("\\.")[0]);
     		
-    		UpdateThemes(theme);
+    		activeScenes.SetActiveTheme(theme);
     		
     		primaryStage.setTitle("Too Zero For Eight");
         	primaryStage.setScene(menu);
