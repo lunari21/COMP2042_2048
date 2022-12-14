@@ -3,13 +3,15 @@ package main.io;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 /**
- * Class designed for saving preferences and game progress, 
- * I honestly don't know what to name this class
+ * Saver class for SaveFile objects
  * @author Alexander Tan Ka Jin
- *
  */
 public class SaveWriter implements ISaver {
-	//Save game and preferences
+	/**
+	 * Saves the seed and board state of a game.
+	 * @param FilePath - The path to the save file
+	 * @param save - The SaveFile object that contaisn the state of the game.
+	 */
 	public static void save(String FilePath, SaveFile save) {
 		try {
 			FileWriter writeLocation = new FileWriter(FilePath);
@@ -22,6 +24,11 @@ public class SaveWriter implements ISaver {
 			else
 				board = save.getGameState().BoardToString();
 
+			/*
+			 * Format is in:
+			 * seed (long type)
+			 * board (string, with each cell separated by | and row separated by %)
+			 */
 			writer.write(Long.toString(seed)+'\n');
 			writer.write(board);
 			writer.close();

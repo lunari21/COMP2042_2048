@@ -7,8 +7,13 @@ import main.model.GameModel;
 
 import java.io.BufferedReader;
 
+/**
+ * Loader class for loading SaveFile objects
+ * @author Alexander Tan Ka Jin
+ */
 public class SaveLoader implements ILoader{
 
+	//Interprets the grid of the game in string form.
 	private static int[][] readGrid(String grid, int Width, int Height) {
 		int[][] out = new int[Height][Width];
 		
@@ -24,18 +29,19 @@ public class SaveLoader implements ILoader{
 		
 		//for each row
 		for (String row : rowTokens) {
-			String[] valueTokens = row.split("\\|");
+			String[] valueTokens = row.split("\\|"); //Split so that each number in the cell is read.
 			
 			//If incompatible width
 			if (valueTokens.length > Width)
 				return null;
 			
-			//for each cell
+			//for each cell, read it's value.
 			for (String valueString : valueTokens) {
 				int val = Integer.parseInt(valueString,10);
 				out[y][x] = val;
 				x += 1;
 			}
+			//goto next row
 			x = 0;
 			y += 1;
 		}
@@ -43,6 +49,7 @@ public class SaveLoader implements ILoader{
 		return out;
 	}
 	
+	//Reads a savefile and interprets it's seed and boardstate.
 	private static void LoadGame(BufferedReader reader, int gridWidth, int gridHeight, SaveFile save) {
 		try {
 			//Load GameState
@@ -56,11 +63,11 @@ public class SaveLoader implements ILoader{
 			
 			GameModel game = new GameModel(gridWidth,gridHeight,seed);
 			
-			//Load Grid
 			String gridString = "";
 			String row = "";
-			//Reads the rest of the savefile.
-			while ((row = reader.readLine())!=null && row.length() != 0) {
+			
+			//Reads the rest of the savefile to load grid.
+			while ((row = reader.readLine())!= null && row.length() != 0) {
 				gridString += row;
 			}
 			int[][] grid = readGrid(gridString, gridWidth, gridHeight);
@@ -79,10 +86,10 @@ public class SaveLoader implements ILoader{
 	
 	/**
 	 * Loads a savefile of a given filePath, if width/height is set to 0, then it does not read the seed/board
-	 * @param FilePath
-	 * @param Width
-	 * @param Height
-	 * @return
+	 * @param FilePath - The path of the savefile
+	 * @param Width - The width of the game board
+	 * @param Height - The height of the game board
+	 * @return A savefile object that contains the saved board state and seed of the game.
 	 */
 	public static SaveFile loadSave(String FilePath, int Width, int Height) {
 		SaveFile save = new SaveFile();
