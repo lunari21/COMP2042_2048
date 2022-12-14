@@ -1,7 +1,7 @@
 package main.io;
 
-import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 /**
  * Saver class for SaveFile objects
  * @author Alexander Tan Ka Jin

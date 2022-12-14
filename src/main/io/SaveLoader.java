@@ -1,11 +1,10 @@
 package main.io;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 
 import main.controller.AlertPopup;
 import main.model.GameModel;
-
-import java.io.BufferedReader;
 
 /**
  * Loader class for loading SaveFile objects

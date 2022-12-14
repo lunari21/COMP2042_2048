@@ -1,7 +1,7 @@
 package main.controller;
 
-import java.util.Optional;
 import java.io.File;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
-
 import main.io.SaveFile;
 import main.io.SaveLoader;
 import main.io.SaveWriter;

@@ -1,22 +1,18 @@
 package main.app;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import main.controller.AlertPopup;
 import main.controller.GameSceneController;
 import main.controller.MenuSceneController;
 import main.controller.SceneManager;
 import main.controller.SettingsController;
-
 import main.io.PrefFile;
 import main.io.PrefLoader;
 import main.io.PrefWriter;

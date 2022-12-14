@@ -8,10 +8,17 @@ package main.io;
 public class ScoreFile implements ISaveData{
 	private int hiScore;
 
+	/**
+	 * @return Currently saved hiscore
+	 */
 	public int getHiScore() {
 		return hiScore;
 	}
 
+	/**
+	 * Sets the hiscore of this file
+	 * @param hiScore - High Score to be recorded
+	 */
 	public void setHiScore(int hiScore) {
 		this.hiScore = hiScore;
 	}
